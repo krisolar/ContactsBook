@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:weightSum="6"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:weightSum="6">
 
     <ImageView
         android:id="@+id/ivPhoto"
         android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_weight="1"
-        android:layout_height="70dp"
-        android:background="#ffff11"/>
+        android:background="@android:color/darker_gray"
+        android:scaleType="fitCenter"
+        android:src="@drawable/person_icon" />
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="4"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#aaffaaff">
+        android:layout_marginLeft="2dp"
+        android:layout_weight="4"
+        android:background="@android:color/darker_gray"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/tvPhoneNumber"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="20dp"
-            android:text="phone number"/>
+            android:gravity="center_vertical"
+            android:text="phone number" />
+
         <TextView
             android:id="@+id/tvLastCall"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="20dp"
-            android:text="last call"/>
+            android:gravity="center_vertical"
+            android:text="last call" />
 
 
     </LinearLayout>
@@ -35,8 +44,11 @@
     <ImageView
         android:id="@+id/ivDetails"
         android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="2dp"
         android:layout_weight="1"
-        android:layout_height="70dp"
-        android:background="#aaaaaa"/>
+        android:background="@android:color/darker_gray"
+        android:scaleType="fitCenter"
+        android:src="@drawable/next_icon" />
 
 </LinearLayout>
