@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.itea.contactsbook.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +19,21 @@ import java.util.List;
  */
 public class ContactsAdapter extends ArrayAdapter{
 
-    private List<ImageView> list;
+    private List<ContactEnitity> list;
     private Context context;
     private LayoutInflater inflater;
 
-    public ContactsAdapter(Context context, int resource) {
+    public ContactsAdapter(Context context, int resource, List list) {
         super(context, resource);
-        list = new ArrayList<>();
+        this.list = list;
         this.context = context;
         inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void updateList(List<ImageView>  list){
+    public void updateList(List<ContactEnitity>  list){
         this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
-        Toast.makeText(getContext(), "updateList", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -44,13 +41,13 @@ public class ContactsAdapter extends ArrayAdapter{
         return list.size();
     }
 
-    public List<ImageView> getList() {
+    public List<ContactEnitity> getList() {
         return list;
     }
 
     @Nullable
     @Override
-    public ImageView getItem(int position) {
+    public ContactEnitity getItem(int position) {
         return list.get(position);
     }
 
@@ -58,17 +55,18 @@ public class ContactsAdapter extends ArrayAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-//        if (view == null) {
-//            view = inflater.inflate(R.layout.each_item, parent, false);
-//        }
-//        ImageView ivListItem = (ImageView) view.findViewById(R.id.ivListItem);
-//
-//        Picasso.with(getContext())
-//                .load("http://a1.mzstatic.com/us/r30/Purple3/v4/ed/dd/e3/eddde34d-892d-a1f7-b60c-1a515dad042d/icon256x256.jpeg")
-//                .resize(64, 64)
-//                .into(ivListItem);
 
-        Toast.makeText(getContext(), list.size(), Toast.LENGTH_SHORT).show();
+        if (view == null) {
+            view = inflater.inflate(R.layout.contact_layout, parent, false);
+        }
+
+        ImageView ivPhoto = (ImageView) view.findViewById(R.id.ivPhoto);
+
+        TextView tvName = (TextView) view.findViewById(R.id.tvName);
+        tvName.setText(list.get(position).getName());
+
+        TextView tvPhoneNumber = (TextView) view.findViewById(R.id.tvPhoneNumber);
+        tvPhoneNumber.setText(list.get(position).getPnoneNumber1());
 
         return view;
     }
