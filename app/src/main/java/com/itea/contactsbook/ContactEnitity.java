@@ -10,18 +10,13 @@ import android.os.Parcelable;
 
 public class ContactEnitity implements Parcelable{
 
-
-    private String id;
-    private Uri photoContact;
-    private String name;
-    private String familyName;
-    private String pnoneNumber1;
-    private String pnoneNumber2;
-    private String email;
-
-    public ContactEnitity() {
+    public String getId() {
+        return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Uri getPhotoContact() {
         return photoContact;
@@ -71,6 +66,33 @@ public class ContactEnitity implements Parcelable{
         this.email = email;
     }
 
+    private String id;
+    private Uri photoContact;
+    private String name;
+    private String familyName;
+    private String pnoneNumber1;
+    private String pnoneNumber2;
+    private String email;
+
+    public ContactEnitity() {
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeParcelable(photoContact, i);
+        parcel.writeString(name);
+        parcel.writeString(familyName);
+        parcel.writeString(pnoneNumber1);
+        parcel.writeString(pnoneNumber2);
+        parcel.writeString(email);
+    }
 
     protected ContactEnitity(Parcel in) {
         id = in.readString();
@@ -80,22 +102,6 @@ public class ContactEnitity implements Parcelable{
         pnoneNumber1 = in.readString();
         pnoneNumber2 = in.readString();
         email = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeParcelable(photoContact, flags);
-        dest.writeString(name);
-        dest.writeString(familyName);
-        dest.writeString(pnoneNumber1);
-        dest.writeString(pnoneNumber2);
-        dest.writeString(email);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     public static final Creator<ContactEnitity> CREATOR = new Creator<ContactEnitity>() {
@@ -109,9 +115,5 @@ public class ContactEnitity implements Parcelable{
             return new ContactEnitity[size];
         }
     };
-
-
-
-
 
 }

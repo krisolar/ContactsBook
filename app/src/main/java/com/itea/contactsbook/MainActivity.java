@@ -32,6 +32,22 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbarMain;
 
 
+    // The Cursor that contains the Contact row
+    public Cursor mCursor;
+    // The index of the lookup key column in the cursor
+    public int mLookupKeyIndex;
+    // The index of the contact's _ID value
+    public int mIdIndex;
+    // The lookup key from the Cursor
+    public String mCurrentLookupKey;
+    // The _ID value from the Cursor
+    public long mCurrentId;
+    // A content URI pointing to the contact
+    Uri mSelectedContactUri;
+    private Cursor phones;
+    private ContactsAdapter adapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         toolbarMain = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbarMain);
+
+
 
         initControls();
         initListeners();
@@ -49,11 +67,10 @@ public class MainActivity extends AppCompatActivity {
         initList();
 
 
-
     }
 
     private void initList() {
-        ContactsAdapter adapter = new ContactsAdapter(this,R.layout.contact_layout,contacts);
+        adapter = new ContactsAdapter(this, R.layout.contact_layout, contacts);
         lvContacts.setAdapter(adapter);
     }
 
@@ -75,13 +92,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+                    /*
+     * Once the user has selected a contact to edit,
+     * this gets the contact's lookup key and _ID values from the
+     * cursor and creates the necessary URI.
+     */
+                mCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+                mCursor.move(position+1);
 
-                Intent editContact = new Intent(Intent.ACTION_EDIT);
-                startActivity(editContact);
+                // Gets the lookup key column index
+                mLookupKeyIndex = mCursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY);
+                // Gets the lookup key value
+                mCurrentLookupKey = mCursor.getString(mLookupKeyIndex);
+                // Gets the _ID column index
+                mIdIndex = mCursor.getColumnIndex(ContactsContract.Contacts._ID);
 
-//                Toast toast = Toast.makeText(getApplicationContext(),"on item click",Toast.LENGTH_SHORT);
-//                toast.show();
+                mCurrentId = mCursor.getLong(mIdIndex);
+                mCursor.close();
+                mSelectedContactUri =
+                        ContactsContract.Contacts.getLookupUri(mCurrentId, mCurrentLookupKey);
+
+                // Creates a new Intent to edit a contact
+                Intent editIntent = new Intent(Intent.ACTION_EDIT);
+                editIntent.setDataAndType(mSelectedContactUri, ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+                editIntent.putExtra("finishActivityOnSaveCompleted", true);
+                startActivity(editIntent);
+
+
+    /*
+     * Sets the contact URI to edit, and the data type that the
+     * Intent must match
+     */
             }
         });
 
@@ -96,13 +137,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void getContacts() {
 
-        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
-        if (phones.moveToFirst()){
+        if (phones.moveToFirst()) {
             do {
-                String id = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-                String name = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+                String id = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+                String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
                 ContactEnitity contactEnitity = new ContactEnitity();
                 contactEnitity.setPnoneNumber1(id);
@@ -111,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
 
                 contacts.add(contactEnitity);
 
-            } while(phones.moveToNext());
-        }
+            } while (phones.moveToNext());
+
+            phones.close();        }
 
     }
 
