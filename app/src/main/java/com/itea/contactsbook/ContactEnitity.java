@@ -10,6 +10,17 @@ import android.os.Parcelable;
 
 public class ContactEnitity implements Parcelable{
 
+    private String id;
+    private Uri photoContact;
+    private String name;
+    private String familyName;
+    private String pnoneNumber1;
+    private String pnoneNumber2;
+    private String email;
+
+    public ContactEnitity() {
+    }
+
     public String getId() {
         return id;
     }
@@ -64,17 +75,6 @@ public class ContactEnitity implements Parcelable{
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    private String id;
-    private Uri photoContact;
-    private String name;
-    private String familyName;
-    private String pnoneNumber1;
-    private String pnoneNumber2;
-    private String email;
-
-    public ContactEnitity() {
     }
 
 

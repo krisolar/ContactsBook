@@ -66,7 +66,8 @@ public class ContactsAdapter extends ArrayAdapter{
         tvName.setText(list.get(position).getName());
 
         TextView tvPhoneNumber = (TextView) view.findViewById(R.id.tvPhoneNumber);
-        tvPhoneNumber.setText(list.get(position).getPnoneNumber1());
+//        tvPhoneNumber.setText(list.get(position).getPnoneNumber1());
+        tvPhoneNumber.setText(list.get(position).getId());
 
         return view;
     }

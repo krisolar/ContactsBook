@@ -21,6 +21,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -28,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fabKeyboard;
     private ListView lvContacts;
-    private List<ContactEnitity> contacts;
+    private ArrayList<ContactEnitity> contacts;
+    private HashSet<ContactEnitity> contactsHashSet;
     private Toolbar toolbarMain;
 
 
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         initListeners();
 
         contacts = new ArrayList<ContactEnitity>();
+        contactsHashSet = new HashSet<ContactEnitity>();
 
         getContacts();
         initList();
@@ -99,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
      */
                 mCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
                 mCursor.move(position+1);
+//                mCursor.move(Integer.valueOf(contacts.get(position).getId()));
 
                 // Gets the lookup key column index
                 mLookupKeyIndex = mCursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY);
@@ -139,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
 
         phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
+        contacts.clear();
+        contactsHashSet.clear();
+
         if (phones.moveToFirst()) {
             do {
                 String id = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
@@ -146,13 +155,28 @@ public class MainActivity extends AppCompatActivity {
                 String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
                 ContactEnitity contactEnitity = new ContactEnitity();
-                contactEnitity.setPnoneNumber1(id);
+                contactEnitity.setId(id);
                 contactEnitity.setPnoneNumber1(phoneNumber);
                 contactEnitity.setName(name);
 
+//                contactsHashSet.add(contactEnitity);
                 contacts.add(contactEnitity);
 
             } while (phones.moveToNext());
+
+//            contacts.clear();
+//            contacts.addAll(contactsHashSet);
+
+            //sorting ArrayList by Name
+//            Collections.sort(contacts, new Comparator<ContactEnitity>() {
+//                @Override
+//                public int compare(ContactEnitity contact2, ContactEnitity contact1)
+//                {
+//                    return  contact2.getName().compareTo(contact1.getName());
+//                }
+//            });
+
+//            contactsHashSet.clear();
 
             phones.close();        }
 
