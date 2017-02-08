@@ -4,6 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="letters1">ГОЛОС</string>
+    <string name="letters1_second">VOICE</string>
+
     <string name="letters2">ABC</string>
     <string name="letters2_second">АБВГ</string>
 
@@ -30,6 +33,12 @@
 
     <string name="letters0"></string>
     <string name="letters0_second">+</string>
+
+    <string name="empty"></string>
+
+    <string name="hide">HIDE KEYBOARD</string>
+
+
 
 
 

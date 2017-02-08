@@ -15,8 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<ContactEnitity> contacts;
     private HashSet<ContactEnitity> contactsHashSet;
     private Toolbar toolbarMain;
+    private LinearLayout ltKeyboard;
 
 
     // The Cursor that contains the Contact row
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     Uri mSelectedContactUri;
     private Cursor phones;
     private ContactsAdapter adapter;
+    private Animation anim;
 
 
     @Override
@@ -60,9 +65,20 @@ public class MainActivity extends AppCompatActivity {
         toolbarMain = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbarMain);
 
-
-
         initControls();
+
+
+//        anim = AnimationUtils.loadAnimation(this,R.anim.keyb_trans_down);
+        ltKeyboard.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.keyb_trans_down));
+
+//        fabKeyboard.startAnimation(AnimationUtils.loadAnimation(this,R.anim.keyb_trans_down));
+
+//        anim = null;
+//        anim = AnimationUtils.loadAnimation(this,R.anim.keyb_trans);
+
+
+
+
         initListeners();
 
         contacts = new ArrayList<ContactEnitity>();
@@ -85,10 +101,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String number = "";
-                Uri call = Uri.parse("tel:" + number);
-                Intent surf = new Intent(Intent.ACTION_DIAL, call);
-                startActivity(surf);
+                ltKeyboard.startAnimation(AnimationUtils.loadAnimation(MainActivity.this,R.anim.keyb_trans));
 
             }
         });
@@ -138,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
     private void initControls() {
         fabKeyboard = (FloatingActionButton) findViewById(R.id.fabKeyboard);
         lvContacts = (ListView) findViewById(R.id.lvContacts);
+        ltKeyboard = (LinearLayout) findViewById(R.id.ltKeyboard);
     }
 
 
